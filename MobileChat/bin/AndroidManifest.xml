@@ -6,8 +6,14 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    
+	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -22,6 +28,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity android:name="br.unirio.livechat.ChatActivity" />
+        
+        <activity android:name="br.unirio.livechat.ServerActivity" />
+        
     </application>
 
 </manifest>
