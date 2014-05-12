@@ -1,57 +1,67 @@
 package br.com.etyllica.sonat.client;
 
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
-import io.netty.channel.*;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.bootstrap.Bootstrap;
 
 public class Client {
 
 	private final String host;
-	
+
 	private final int port;
-	
+
 	private Channel channel;
-	
+
+	private EventLoopGroup group;
+
+	private ClientListener listener;
+
 	public Client(String host, int port) {
+		super();
+
 		this.host = host;
 		this.port = port;
 	}
 
-	public void init() throws Exception {
-		
-		EventLoopGroup group = new NioEventLoopGroup();
+	public Client(String host, int port, ClientListener listener) {
+		super();
 
-		try {
-			
-			Bootstrap bootstrap = new Bootstrap()
-			.group(group)
-			.channel(NioSocketChannel.class)
-			.handler(new ChatClientInitializer());
+		this.host = host;
+		this.port = port;
 
-			channel = bootstrap.connect(host, port).sync().channel();
-			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-			
-			//sendMessage("/name "+name);s
-			
-			while (true) {
-				sendMessage(in.readLine());
-			}
-
-		} finally {
-			
-			group.shutdownGracefully();
-			
-		}
-		
+		this.listener = listener;
 	}
-	
-	private void sendMessage(String message) {
+
+	public void init() throws Exception {
+
+		group = new NioEventLoopGroup();
+
+		Bootstrap bootstrap = new Bootstrap()
+		.group(group)
+		.channel(NioSocketChannel.class)
+		.handler(new ChatClientInitializer(listener));
+
+		channel = bootstrap.connect(host, port).sync().channel();
+
+	}
+
+	public void finish() {
+		group.shutdownGracefully();
+	}
+
+	public void sendMessage(String message) {
 		channel.writeAndFlush(message+ "\r\n");
+	}
+
+	public ClientListener getListener() {
+		return listener;
+	}
+
+	public void setListener(ClientListener listener) {
+		this.listener = listener;
 	}
 
 }

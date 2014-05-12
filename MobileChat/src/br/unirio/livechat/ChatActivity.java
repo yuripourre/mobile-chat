@@ -1,6 +1,6 @@
 package br.unirio.livechat;
 
-import br.com.etyllica.sonat.client.Client;
+import br.com.etyllica.sonat.client.ClientListener;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ChatActivity extends Activity {
+public class ChatActivity extends Activity implements ClientListener {
 
 	private LinearLayout messages;
 	
@@ -52,6 +52,19 @@ public class ChatActivity extends Activity {
 		
 		layout.addView(messageView);
 		
+	}
+
+	@Override
+	public void updateNames(String[] names) {
+		// TODO Aqui é o método que recebe o nome dos usuários da sala
+		// Toda vez que alguém entra, sai ou muda de nome esse método é chamado		
+	}
+
+	@Override
+	public void receiveMessage(String name, String message) {
+		// TODO Aqui é o método quando uma mensagem é recebida
+		//name = nome do usuário
+		//message = mensagem recebida
 	}
 
 }
