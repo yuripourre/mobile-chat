@@ -10,7 +10,9 @@ import android.widget.EditText;
 
 public class LoginActivity extends Activity {
 
-	public static final String USER_NAME = "username";
+	public static final String SERVER_ADDRESS = "host";
+	
+	public static final int DEFAULT_PORT = 8000;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -18,10 +20,10 @@ public class LoginActivity extends Activity {
 		
 		setContentView(R.layout.login);
 				
-		final EditText textField = (EditText) findViewById(R.id.apelido);
+		final EditText textField = (EditText) findViewById(R.id.servidor);
 		
-		final Button button = (Button) findViewById(R.id.botao_login);
-		
+		final Button button = (Button) findViewById(R.id.botao_entrar);
+				
 		button.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -29,7 +31,7 @@ public class LoginActivity extends Activity {
 				
 				Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
 												
-			    intent.putExtra(USER_NAME, textField.getText().toString());
+			    intent.putExtra(SERVER_ADDRESS, textField.getText().toString());
 			    
 			    startActivity(intent);
 				
@@ -37,6 +39,22 @@ public class LoginActivity extends Activity {
 			
 		});
 		
+		final Button serverButton = (Button) findViewById(R.id.botao_criar_sala);
+		
+		serverButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View view) {
+				
+				Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
+												
+			    intent.putExtra(SERVER_ADDRESS, textField.getText().toString());
+			    
+			    startActivity(intent);
+				
+			}
+			
+		});
 	}
 
 	@Override

@@ -19,26 +19,26 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.25"
             android:orientation="horizontal" >
 
             <TextView
                 android:id="@+id/lista_pessoas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lista de Pessoas"
+                android:text="Lista de Pessoas:"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3" >
+            android:layout_weight="3.25" >
 
             <LinearLayout
                 android:id="@+id/mensagens"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical" >
             </LinearLayout>
             
@@ -50,13 +50,14 @@
             android:orientation="horizontal" >
 
             <EditText
-                android:id="@+id/editText1"
+                android:id="@+id/texto_mensagem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="4" />
+                android:layout_weight="4"
+                android:inputType="text" />
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/botao_enviar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
