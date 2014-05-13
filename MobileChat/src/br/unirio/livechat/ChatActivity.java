@@ -4,6 +4,7 @@ import br.com.etyllica.sonat.client.Client;
 import br.com.etyllica.sonat.client.ClientListener;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 public class ChatActivity extends Activity implements ClientListener {
 
 	private LinearLayout messages;
+	
+	private EditText textField;
 
 	private TextView lista;
 
@@ -24,6 +27,8 @@ public class ChatActivity extends Activity implements ClientListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		setContentView(R.layout.chat);
 
@@ -34,9 +39,20 @@ public class ChatActivity extends Activity implements ClientListener {
 		String serverAddress = bundle.getString(LoginActivity.SERVER_ADDRESS);
 
 		//Start Client
+		startClient(serverAddress);
+
+		messages = (LinearLayout)findViewById(R.id.mensagens);
+
+		addFakeMessages(messages);
+	}
+	
+	private void startClient(String serverAddress) {
+
 		try {
 
 			client = new Client(serverAddress, LoginActivity.DEFAULT_PORT);
+			
+			client.setListener(ChatActivity.this);
 
 			Button sendButton = (Button) findViewById(R.id.botao_enviar);
 
@@ -49,10 +65,7 @@ public class ChatActivity extends Activity implements ClientListener {
 			backToLoginScreen();
 			
 		}
-
-		messages = (LinearLayout)findViewById(R.id.mensagens);
-
-		addFakeMessages(messages);
+		
 	}
 
 	private void configureSendButton(Button sendButton) {
@@ -62,13 +75,15 @@ public class ChatActivity extends Activity implements ClientListener {
 			@Override
 			public void onClick(View v) {
 
-				EditText textField = (EditText) findViewById(R.id.texto_mensagem);   
+				textField = (EditText) findViewById(R.id.texto_mensagem);   
 
 				String message = textField.getText().toString();
 
 				if(!message.isEmpty()) {
 
 					client.sendMessage(message);
+					
+					textField.setText("");
 
 				}
 
@@ -84,6 +99,14 @@ public class ChatActivity extends Activity implements ClientListener {
 
 		addMessage(layout, "John Snow", "Sup bro...");
 
+		addMessage(layout, "Ned Stark", "Shut Up!");
+		
+		addMessage(layout, "Ned Stark", "Shut Up!");
+		
+		addMessage(layout, "Ned Stark", "Shut Up!");
+		
+		addMessage(layout, "Ned Stark", "Shut Up!");
+		
 		addMessage(layout, "Ned Stark", "Shut Up!");
 
 		addMessage(layout, "João das neves", "Sabe de nada inocente");
@@ -104,18 +127,21 @@ public class ChatActivity extends Activity implements ClientListener {
 
 	@Override
 	public void updateNames(String[] names) {
-		String text = "Lista de Pessoas: ";
-
-		for(String name: names) {
-			text += name;
+		String text = "Pessoas: ";
+		
+		text+= names[0];
+		
+		for(int i=1;i<names.length;i++) {
+			text += " ";
+			text += names[i];
 		}
-
+		
 		lista.setText(text);
 	}
 
 	@Override
 	public void receiveMessage(String name, String message) {
-		addMessage(messages,name, message);
+		addMessage(messages, name, message);
 	}
 	
 	private void backToLoginScreen() {

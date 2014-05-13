@@ -30,33 +30,27 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 
 		String key = incoming.remoteAddress().toString();
 		
-		if(names.size() > 0) {
-			tellNames(incoming);
-		}
-		
-		for(Channel channel : channels) {
-			channel.writeAndFlush("SERVER"+DELIMITER+ key + " has joined\n");
-		}
-
 		names.put(key, key);
 		
 		System.out.println("Users: " + names.size());
-
+		
 		channels.add(incoming);
-
+		
+		tellNames();
+		
 	}
 
 	@Override
 	public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
 		Channel leaving = ctx.channel();
 
-		for(Channel channel : channels) {
-			channel.writeAndFlush("SERVER"+DELIMITER+ leaving.remoteAddress() + " has left\n");
-		}
-
-		names.remove(ctx.channel());
+		names.remove(leaving);
 		
-		channels.remove(ctx.channel());
+		System.out.println("Users: " + names.size());
+		
+		channels.remove(leaving);
+		
+		tellNames();
 		
 	}
 
@@ -64,6 +58,10 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 	protected void channelRead0(ChannelHandlerContext ctx, String msg)
 			throws Exception {
 
+		if(msg==null||"null".equals(msg)) {
+			return;
+		}
+		
 		Channel incoming = ctx.channel();
 
 		String key = names.get(incoming.remoteAddress().toString());
@@ -71,23 +69,22 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 		if(msg.startsWith("/name")) {
 
 			changeName(incoming, msg);
+		
+			tellNames();
+			//Print msg in Server Console
+			System.out.println("(name)" +key + DELIMITER + msg);
 			
 		} else {
 			
-			for(Channel channel : channels) {
+			tellAll(key + DELIMITER + msg);
 
-				channel.writeAndFlush(key + DELIMITER + msg +"\n");
-
-			}
+			System.out.println(key + DELIMITER + msg);
 
 		}
 		
-		//Print msg in Server Console
-		System.out.println(key + DELIMITER + msg);
-
 	}
 	
-	private void tellNames(Channel incoming) {
+	private void tellNames() {
 		
 		StringBuilder builder = new StringBuilder();
 		
@@ -99,7 +96,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 			
 		}
 		
-		incoming.writeAndFlush("/users "+builder.toString()+"\n");
+		tellAll("/users "+builder.toString());		
 		
 	}
 	
@@ -118,6 +115,16 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 		System.out.println(names.get(key)+" change the name to "+name);
 		
 		names.put(key, name);
+		
+	}
+	
+	private void tellAll(String message) {
+		
+		for(Channel channel : channels) {
+
+			channel.writeAndFlush(message+"\n");
+
+		}
 		
 	}
 

@@ -2,23 +2,32 @@ package br.unirio.livechat;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 
 	public static final String SERVER_ADDRESS = "host";
 	
-	public static final int DEFAULT_PORT = 8000;
+	public static final int DEFAULT_PORT = 8080;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
 		setContentView(R.layout.login);
 				
+		TextView textView = (TextView) findViewById(R.id.servidor);
+		
+		textView.setText(ServerActivity.getLocalIpAddress()+":"+DEFAULT_PORT);		
+		
 		final EditText textField = (EditText) findViewById(R.id.endereco);
 		
 		final Button button = (Button) findViewById(R.id.botao_entrar);
@@ -36,7 +45,9 @@ public class LoginActivity extends Activity {
 					address = "127.0.0.1";
 				}
 				
-			    intent.putExtra(SERVER_ADDRESS, textField.getText().toString());
+				Toast.makeText(LoginActivity.this, address, Toast.LENGTH_LONG).show();
+				
+			    intent.putExtra(SERVER_ADDRESS, address);
 			    
 			    startActivity(intent);
 			    
@@ -62,6 +73,7 @@ public class LoginActivity extends Activity {
 			}
 			
 		});
+		
 	}
 
 }

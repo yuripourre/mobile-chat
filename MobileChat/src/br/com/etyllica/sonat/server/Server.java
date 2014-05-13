@@ -18,7 +18,7 @@ public class Server {
 	
 	public void init() throws Exception {
 		
-		System.out.println("Starting Server...");
+		System.out.println("Starting Server..."+port);
 		
 		EventLoopGroup bossGroup = new NioEventLoopGroup();
 		

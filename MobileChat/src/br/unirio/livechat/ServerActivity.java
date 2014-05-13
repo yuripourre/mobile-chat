@@ -8,6 +8,7 @@ import java.util.Enumeration;
 import org.apache.http.conn.util.InetAddressUtils;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -18,6 +19,8 @@ public class ServerActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
 		setContentView(R.layout.server);
 
 		TextView text = (TextView) findViewById(R.id.mensagem_servidor);
@@ -36,7 +39,7 @@ public class ServerActivity extends Activity {
 
 	}
 
-	public String getLocalIpAddress() {
+	public static String getLocalIpAddress() {
 
 		String ipv4 = "";
 		
