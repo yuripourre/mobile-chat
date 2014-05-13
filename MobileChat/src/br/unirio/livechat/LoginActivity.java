@@ -1,9 +1,8 @@
 package br.unirio.livechat;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +19,7 @@ public class LoginActivity extends Activity {
 		
 		setContentView(R.layout.login);
 				
-		final EditText textField = (EditText) findViewById(R.id.servidor);
+		final EditText textField = (EditText) findViewById(R.id.endereco);
 		
 		final Button button = (Button) findViewById(R.id.botao_entrar);
 				
@@ -46,7 +45,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View view) {
 				
-				Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
+				Intent intent = new Intent(LoginActivity.this, ServerActivity.class);
 												
 			    intent.putExtra(SERVER_ADDRESS, textField.getText().toString());
 			    
@@ -55,13 +54,6 @@ public class LoginActivity extends Activity {
 			}
 			
 		});
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
 	}
 
 }

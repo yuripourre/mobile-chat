@@ -18,7 +18,17 @@ public class ServerActivity extends Activity {
 		
 		TextView text = (TextView) findViewById(R.id.mensagem_servidor);
 		
-		text.setText("Servidor Criado: "+getLocalIpAddress());
+		final String localIp = getLocalIpAddress();
+		
+		if(localIp!=null) {
+			
+			text.setText("Servidor Criado: "+localIp);
+			
+		} else {
+			
+			text.setText("Servidor Criado");
+			
+		}
 		
 		setContentView(R.layout.server);
 		
