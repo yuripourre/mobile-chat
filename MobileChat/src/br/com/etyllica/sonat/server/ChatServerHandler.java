@@ -18,42 +18,18 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 	
 	private final static String DELIMITER = " : ";
 	
+	private static final String COMMAND_USERS = "/users ";
+	
+	private static final String COMMAND_NAME = "/name ";
+	
+	private int count = 0;
+	
 	public ChatServerHandler(Map<String, String> names) {
 		super();
 		
 		this.names = names;
 	}
 	
-	@Override
-	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-		Channel incoming = ctx.channel();
-
-		String key = incoming.remoteAddress().toString();
-		
-		names.put(key, key);
-		
-		System.out.println("Users: " + names.size());
-		
-		channels.add(incoming);
-		
-		tellNames();
-		
-	}
-
-	@Override
-	public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-		Channel leaving = ctx.channel();
-
-		names.remove(leaving);
-		
-		System.out.println("Users: " + names.size());
-		
-		channels.remove(leaving);
-		
-		tellNames();
-		
-	}
-
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, String msg)
 			throws Exception {
@@ -66,21 +42,55 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 
 		String key = names.get(incoming.remoteAddress().toString());
 		
-		if(msg.startsWith("/name")) {
+		if(msg.startsWith(COMMAND_NAME)) {
 
 			changeName(incoming, msg);
 		
 			tellNames();
-			//Print msg in Server Console
-			System.out.println("(name)" +key + DELIMITER + msg);
-			
+						
 		} else {
 			
-			tellAll(key + DELIMITER + msg);
-
-			System.out.println(key + DELIMITER + msg);
-
+			tellMessage(key, msg);
+						
 		}
+		
+		System.out.println(key + DELIMITER + msg);
+		
+	}
+	
+	@Override
+	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+		Channel incoming = ctx.channel();
+		
+		count++;
+
+		String key = incoming.remoteAddress().toString();
+		
+		names.put(key, "visitante"+count);
+		
+		System.out.println("Users: " + names.size());
+		
+		channels.add(incoming);
+		
+		incoming.writeAndFlush("Server"+DELIMITER+"Hello!\r\n");
+		
+		tellNames();
+		
+	}
+
+	@Override
+	public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+		Channel leaving = ctx.channel();
+
+		String key = leaving.remoteAddress().toString();
+		
+		names.remove(key);
+		
+		System.out.println("Users: " + names.size());
+		
+		channels.remove(leaving);
+		
+		tellNames();
 		
 	}
 	
@@ -95,8 +105,14 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 			builder.append(" ");
 			
 		}
+				
+		tellAll(COMMAND_USERS+builder.toString());
 		
-		tellAll("/users "+builder.toString());		
+	}
+	
+	private void tellMessage(String name, String message) {
+		
+		tellAll("/msg "+name+" "+message);
 		
 	}
 	
@@ -122,7 +138,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 		
 		for(Channel channel : channels) {
 
-			channel.writeAndFlush(message+"\n");
+			channel.writeAndFlush(message+"\r\n");
 
 		}
 		

@@ -7,8 +7,10 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class ChatClientHandler extends SimpleChannelInboundHandler<String> {
 
 	private ClientListener listener;
+		
+	private static final String COMMAND_USERS = "/users ";//whiteSpacing
 	
-	private static final String DELIMITER = " : ";
+	private static final String COMMAND_MESSAGE = "/msg ";//whiteSpacing
 	
 	public ChatClientHandler(ClientListener listener) {
 		super();
@@ -19,19 +21,21 @@ public class ChatClientHandler extends SimpleChannelInboundHandler<String> {
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
 		
-		if(msg.startsWith("/users")) {
+		if(msg.startsWith(COMMAND_USERS)) {
 			
-			String[] names = msg.substring("/users ".length()).split(" "); 
+			String[] names = msg.substring(COMMAND_USERS.length()).split(" "); 
 			
 			listener.updateNames(names);
 			
-		} else {
+		} else if (msg.startsWith(COMMAND_MESSAGE)) {
 			
-			String[] parts = msg.split(DELIMITER);
+			String message = msg.substring(COMMAND_MESSAGE.length());
 			
-			String userName = parts[0];
+			String[] parts = msg.split(" ");
 			
-			String message = msg.substring(userName.length()+DELIMITER.length());
+			String userName = parts[1];
+			
+			message = message.substring(userName.length()+" ".length());
 			
 			listener.receiveMessage(userName, message);
 			

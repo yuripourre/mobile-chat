@@ -38,12 +38,11 @@ public class ChatActivity extends Activity implements ClientListener {
 
 		String serverAddress = bundle.getString(LoginActivity.SERVER_ADDRESS);
 
+		messages = (LinearLayout)findViewById(R.id.mensagens);
+		
 		//Start Client
 		startClient(serverAddress);
 
-		messages = (LinearLayout)findViewById(R.id.mensagens);
-
-		addFakeMessages(messages);
 	}
 	
 	private void startClient(String serverAddress) {
@@ -83,8 +82,10 @@ public class ChatActivity extends Activity implements ClientListener {
 
 					client.sendMessage(message);
 					
+					addMessage(messages, "Eu: ", message);
+					
 					textField.setText("");
-
+					
 				}
 
 			}
@@ -93,35 +94,14 @@ public class ChatActivity extends Activity implements ClientListener {
 
 	}
 
-	private void addFakeMessages(LinearLayout layout) {
-
-		addMessage(layout, "Frank Zappa", "Wazup!");
-
-		addMessage(layout, "John Snow", "Sup bro...");
-
-		addMessage(layout, "Ned Stark", "Shut Up!");
-		
-		addMessage(layout, "Ned Stark", "Shut Up!");
-		
-		addMessage(layout, "Ned Stark", "Shut Up!");
-		
-		addMessage(layout, "Ned Stark", "Shut Up!");
-		
-		addMessage(layout, "Ned Stark", "Shut Up!");
-
-		addMessage(layout, "João das neves", "Sabe de nada inocente");
-
-	}
-
 	private void addMessage(LinearLayout layout, String usuario, String message) {
 
 		TextView messageView = new TextView(this);
 
-		messageView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		//messageView.setText(usuario+": "+message);
+		messageView.setText(message);
 
-		messageView.setText(usuario+": "+message);
-
-		layout.addView(messageView);
+		layout.addView(messageView, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
 	}
 
@@ -141,6 +121,8 @@ public class ChatActivity extends Activity implements ClientListener {
 
 	@Override
 	public void receiveMessage(String name, String message) {
+		Toast.makeText(this, name+": "+message, Toast.LENGTH_LONG).show();
+		
 		addMessage(messages, name, message);
 	}
 	

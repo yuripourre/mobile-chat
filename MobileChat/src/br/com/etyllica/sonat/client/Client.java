@@ -3,6 +3,7 @@ package br.com.etyllica.sonat.client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -42,6 +43,8 @@ public class Client {
 		Bootstrap bootstrap = new Bootstrap()
 		.group(group)
 		.channel(NioSocketChannel.class)
+		.option(ChannelOption.TCP_NODELAY, true)
+		.option(ChannelOption.SO_KEEPALIVE, true)
 		.handler(new ChatClientInitializer(listener));
 
 		channel = bootstrap.connect(host, port).sync().channel();
@@ -53,7 +56,7 @@ public class Client {
 	}
 
 	public void sendMessage(String message) {
-		channel.writeAndFlush(message+ "\r\n");
+		channel.writeAndFlush(message+"\r\n");
 	}
 
 	public ClientListener getListener() {

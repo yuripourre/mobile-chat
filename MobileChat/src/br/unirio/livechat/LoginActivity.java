@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends Activity {
@@ -23,12 +22,10 @@ public class LoginActivity extends Activity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
 		setContentView(R.layout.login);
-				
-		TextView textView = (TextView) findViewById(R.id.servidor);
-		
-		textView.setText(ServerActivity.getLocalIpAddress()+":"+DEFAULT_PORT);		
 		
 		final EditText textField = (EditText) findViewById(R.id.endereco);
+		
+		textField.setText("10.42.0.1");
 		
 		final Button button = (Button) findViewById(R.id.botao_entrar);
 				
