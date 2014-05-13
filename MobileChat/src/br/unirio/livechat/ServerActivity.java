@@ -30,7 +30,7 @@ public class ServerActivity extends Activity {
 
 		} else {
 
-			text.setText("Servidor Criado");
+			text.setText("Servidor não pode ser Criado!");
 
 		}
 
