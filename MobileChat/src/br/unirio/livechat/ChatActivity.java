@@ -20,6 +20,8 @@ public class ChatActivity extends Activity implements ClientListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		setContentView(R.layout.chat);
 
 		lista = (EditText) findViewById(R.id.lista_pessoas);
 
@@ -31,6 +33,7 @@ public class ChatActivity extends Activity implements ClientListener {
 		
 		//Start Client
 		try {
+			
 			client = new Client(serverAddress, LoginActivity.DEFAULT_PORT);
 			
 			Button sendButton = (Button) findViewById(R.id.botao_enviar);
@@ -45,8 +48,6 @@ public class ChatActivity extends Activity implements ClientListener {
 		}
 
 		messages = (LinearLayout)findViewById(R.id.mensagens);
-
-		setContentView(R.layout.chat);
 
 		addFakeMessages(messages);
 	}

@@ -16,6 +16,8 @@ public class ServerActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		setContentView(R.layout.server);
+		
 		TextView text = (TextView) findViewById(R.id.mensagem_servidor);
 		
 		final String localIp = getLocalIpAddress();
@@ -29,9 +31,7 @@ public class ServerActivity extends Activity {
 			text.setText("Servidor Criado");
 			
 		}
-		
-		setContentView(R.layout.server);
-		
+				
 	}
 	
 	public String getLocalIpAddress() {

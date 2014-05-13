@@ -29,7 +29,13 @@ public class LoginActivity extends Activity {
 			public void onClick(View view) {
 				
 				Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
-												
+				
+				String address = textField.getText().toString();
+				
+				if(address.isEmpty()) {
+					address = "127.0.0.1";
+				}
+				
 			    intent.putExtra(SERVER_ADDRESS, textField.getText().toString());
 			    
 			    startActivity(intent);
@@ -46,9 +52,7 @@ public class LoginActivity extends Activity {
 			public void onClick(View view) {
 				
 				Intent intent = new Intent(LoginActivity.this, ServerActivity.class);
-												
-			    intent.putExtra(SERVER_ADDRESS, textField.getText().toString());
-			    
+
 			    startActivity(intent);
 				
 			}
