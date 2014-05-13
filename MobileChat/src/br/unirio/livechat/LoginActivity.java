@@ -39,6 +39,8 @@ public class LoginActivity extends Activity {
 			    intent.putExtra(SERVER_ADDRESS, textField.getText().toString());
 			    
 			    startActivity(intent);
+			    
+			    LoginActivity.this.finish();
 				
 			}
 			
@@ -54,6 +56,8 @@ public class LoginActivity extends Activity {
 				Intent intent = new Intent(LoginActivity.this, ServerActivity.class);
 
 			    startActivity(intent);
+			    
+			    LoginActivity.this.finish();
 				
 			}
 			
