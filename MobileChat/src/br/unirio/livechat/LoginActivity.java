@@ -13,7 +13,7 @@ public class LoginActivity extends Activity {
 
 	public static final String SERVER_ADDRESS = "host";
 	
-	public static final int DEFAULT_PORT = 8080;
+	public static final int DEFAULT_PORT = 4444;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

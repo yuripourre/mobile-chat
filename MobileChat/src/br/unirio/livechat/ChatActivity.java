@@ -1,7 +1,5 @@
 package br.unirio.livechat;
 
-import br.com.etyllica.sonat.client.Client;
-import br.com.etyllica.sonat.client.ClientListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -13,6 +11,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import br.com.etyllica.mobile.gui.HorizontalRule;
+import br.com.etyllica.sonat.adapter.mina.client.MinaClient;
+import br.com.etyllica.sonat.client.Client;
+import br.com.etyllica.sonat.client.ClientListener;
 
 public class ChatActivity extends Activity implements ClientListener {
 
@@ -40,6 +42,8 @@ public class ChatActivity extends Activity implements ClientListener {
 
 		messages = (LinearLayout)findViewById(R.id.mensagens);
 		
+		addMessage(messages, "Servidor", "Hello!");
+		
 		//Start Client
 		startClient(serverAddress);
 
@@ -49,7 +53,7 @@ public class ChatActivity extends Activity implements ClientListener {
 
 		try {
 
-			client = new Client(serverAddress, LoginActivity.DEFAULT_PORT);
+			client = new MinaClient(serverAddress, LoginActivity.DEFAULT_PORT);
 			
 			client.setListener(ChatActivity.this);
 
@@ -102,6 +106,7 @@ public class ChatActivity extends Activity implements ClientListener {
 		messageView.setText(message);
 
 		layout.addView(messageView, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		layout.addView(new HorizontalRule(this));
 
 	}
 

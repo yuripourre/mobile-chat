@@ -7,6 +7,8 @@ import java.util.Enumeration;
 
 import org.apache.http.conn.util.InetAddressUtils;
 
+import br.com.etyllica.sonat.adapter.mina.server.MinaServer;
+import br.com.etyllica.sonat.server.Server;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -15,6 +17,8 @@ import android.widget.TextView;
 
 public class ServerActivity extends Activity {
 
+	private Server server;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -26,10 +30,24 @@ public class ServerActivity extends Activity {
 		TextView text = (TextView) findViewById(R.id.mensagem_servidor);
 
 		final String localIp = getLocalIpAddress();
-
+		
 		if(localIp!=null) {
-
-			text.setText("Servidor Criado: "+localIp);
+			
+			server = new MinaServer(LoginActivity.DEFAULT_PORT);
+			
+			try {
+				
+				text.setText("Servidor Criado: "+localIp);
+				
+				server.init();
+				
+			} catch (Exception e) {
+				
+				text.setText("Servidor não pode ser Criado!");
+				
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		} else {
 
